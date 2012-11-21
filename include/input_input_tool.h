@@ -9,17 +9,11 @@
 /// \file mcrl2/utilities/input_input_tool.h
 /// \brief add your file description here.
 
-#ifndef MCRL2_UTILITIES_INPUT_INPUT_TOOL_H
-#define MCRL2_UTILITIES_INPUT_INPUT_TOOL_H
+#ifndef INPUT_INPUT_TOOL_H
+#define INPUT_INPUT_TOOL_H
 
 #include <sstream>
-#include "mcrl2/utilities/tool.h"
-
-namespace mcrl2
-{
-
-namespace utilities
-{
+#include "tool.h"
 
 namespace tools
 {
@@ -118,8 +112,4 @@ class input_input_tool: public tool
 
 } // namespace tools
 
-} // namespace utilities
-
-} // namespace mcrl2
-
-#endif // MCRL2_UTILITIES_INPUT_INPUT_TOOL_H
+#endif // INPUT_INPUT_TOOL_H

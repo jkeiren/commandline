@@ -6,21 +6,14 @@
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
-/// \file mcrl2/utilities/input_tool.h
+/// \file input_tool.h
 /// \brief Base class for tools that take a file as input.
 
-#ifndef MCRL2_UTILITIES_INPUT_TOOL_H
-#define MCRL2_UTILITIES_INPUT_TOOL_H
+#ifndef INPUT_TOOL_H
+#define INPUT_TOOL_H
 
 #include <sstream>
-// #include "mcrl2/utilities/text_utility.h"
-#include "mcrl2/utilities/tool.h"
-
-namespace mcrl2
-{
-
-namespace utilities
-{
+#include "tool.h"
 
 namespace tools
 {
@@ -102,8 +95,4 @@ class input_tool: public tool
 
 } // namespace tools
 
-} // namespace utilities
-
-} // namespace mcrl2
-
-#endif // MCRL2_UTILITIES_INPUT_TOOL_H
+#endif // INPUT_TOOL_H
