@@ -21,12 +21,6 @@
 #include "command_line_interface.h"
 #include "execution_timer.h"
 
-namespace mcrl2
-{
-
-namespace utilities
-{
-
 /// \brief The namespace for command line tool classes
 namespace tools
 {
@@ -102,24 +96,23 @@ class tool
           throw parser.error("options -q/--quiet and -v/--verbose cannot be used together\n");
         }
       }
-#ifndef MCRL2_TOOL_CLASSES_NO_CORE
+
       if (parser.options.count("quiet"))
       {
-        log::mcrl2_logger::set_reporting_level(log::quiet);
+        log::logger::set_reporting_level(log::quiet);
       }
       if (parser.options.count("verbose"))
       {
-        log::mcrl2_logger::set_reporting_level(log::verbose);
+        log::logger::set_reporting_level(log::verbose);
       }
       if (parser.options.count("debug"))
       {
-        log::mcrl2_logger::set_reporting_level(log::debug);
+        log::logger::set_reporting_level(log::debug);
       }
       if (parser.options.count("log-level"))
       {
-        log::mcrl2_logger::set_reporting_level(log::log_level_from_string(parser.option_argument("log-level")));
+        log::logger::set_reporting_level(log::log_level_from_string(parser.option_argument("log-level")));
       }
-#endif
     }
 
     /// \brief Checks if the number of positional options is OK.
@@ -222,22 +215,14 @@ class tool
 
         return EXIT_SUCCESS;
       }
-      catch (mcrl2::runtime_error& e)
-      {
-        mCRL2log(mcrl2::log::error) << e.what() << std::endl;
-      }
       catch (std::exception& e)
       {
-        mCRL2log(mcrl2::log::error) << e.what() << std::endl;
+        log(log::error) << e.what() << std::endl;
       }
       return EXIT_FAILURE;
     }
 };
 
 } // namespace tools
-
-} // namespace utilities
-
-} // namespace mcrl2
 
 #endif // MCRL2_UTILITIES_TOOL_H
