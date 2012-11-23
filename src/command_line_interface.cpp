@@ -15,18 +15,13 @@
 #include <memory>
 #include <locale>
 
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
 #include <iterator>
 
-#if !defined(MCRL2_DISABLE_BOOST_REGEX)
 #include <boost/regex.hpp>
-#endif
-
-#include <fstream>
-#include <iostream>
-
 #include <boost/xpressive/xpressive_static.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/replace.hpp>
@@ -36,8 +31,8 @@
 #define __COMMAND_LINE_INTERFACE__
 /// \endcond
 
-#include "command_line_interface.h"
-#include "command_line_error.h"
+#include "cppcli/command_line_interface.h"
+#include "cppcli/command_line_error.h"
 
 namespace utilities
 {

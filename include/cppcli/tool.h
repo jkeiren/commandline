@@ -16,7 +16,7 @@
 #include <string>
 #include <stdexcept>
 
-#include "logger.h"
+#include "cpplogging/logger.h"
 
 #include "command_line_interface.h"
 #include "execution_timer.h"
@@ -99,19 +99,19 @@ class tool
 
       if (parser.options.count("quiet"))
       {
-        log::logger::set_reporting_level(log::quiet);
+        cpplogging::logger::set_reporting_level(cpplogging::quiet);
       }
       if (parser.options.count("verbose"))
       {
-        log::logger::set_reporting_level(log::verbose);
+        cpplogging::logger::set_reporting_level(cpplogging::verbose);
       }
       if (parser.options.count("debug"))
       {
-        log::logger::set_reporting_level(log::debug);
+        cpplogging::logger::set_reporting_level(cpplogging::debug);
       }
       if (parser.options.count("log-level"))
       {
-        log::logger::set_reporting_level(log::log_level_from_string(parser.option_argument("log-level")));
+        cpplogging::logger::set_reporting_level(cpplogging::log_level_from_string(parser.option_argument("log-level")));
       }
     }
 
@@ -217,7 +217,7 @@ class tool
       }
       catch (std::exception& e)
       {
-        log(log::error) << e.what() << std::endl;
+        log(cpplogging::error) << e.what() << std::endl;
       }
       return EXIT_FAILURE;
     }
