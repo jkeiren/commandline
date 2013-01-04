@@ -1,9 +1,17 @@
 cmake_minimum_required(VERSION 2.6)
 project (cppcli)
 
-# Include external libraries
-add_subdirectory(external/googletest)
-add_subdirectory(external/cpplogging)
+if(NOT DEFINED CPPCLI_STANDALONE)
+  option(CPPCLI_STANDALONE "Build CLI as standalone project" ON)
+endif()
+
+if(CPPCLI_STANDALONE)
+  # Include external libraries
+  add_subdirectory(external/googletest)
+
+  set(CPPLOGGING_STANDALONE OFF)
+  add_subdirectory(external/cpplogging)
+endif()
 
 # Trick to add header files to projects in IDEs like Visual Studio and XCode
 FILE(GLOB_RECURSE HEADERS "include/**.h")
