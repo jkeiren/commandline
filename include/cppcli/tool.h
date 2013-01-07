@@ -217,7 +217,7 @@ class tool
       }
       catch (std::exception& e)
       {
-        log(cpplogging::error) << e.what() << std::endl;
+        cpplog(cpplogging::error) << e.what() << std::endl;
       }
       return EXIT_FAILURE;
     }
