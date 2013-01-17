@@ -6,6 +6,7 @@ if(NOT DEFINED CPPCLI_STANDALONE)
 endif()
 
 if(CPPCLI_STANDALONE)
+  find_package(Boost)
   # Include external libraries
   add_subdirectory(external/googletest)
 
@@ -23,8 +24,11 @@ add_custom_target(${PROJECT_NAME}_headers
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 set(CMAKE_CXX_FLAGS_ANALYSIS "${CMAKE_CXX_FLAGS} --analyse")
 
-include_directories(include)
-include_directories(${cpplogging_SOURCE_DIR}/include)
+include_directories(
+  include
+  ${cpplogging_SOURCE_DIR}/include
+  ${Boost_INCLUDE_DIR}
+)
 
 add_library (cppcli
   ${SOURCES}
