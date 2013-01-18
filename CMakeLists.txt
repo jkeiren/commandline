@@ -14,6 +14,8 @@ if(CPPCLI_STANDALONE)
   add_subdirectory(external/cpplogging)
 endif()
 
+message(STATUS "Using Boost headers from ${Boost_INCLUDE_DIR}")
+
 # Trick to add header files to projects in IDEs like Visual Studio and XCode
 FILE(GLOB_RECURSE HEADERS "include/**.h")
 FILE(GLOB_RECURSE SOURCES "src/**.cpp")
