@@ -1,61 +1,73 @@
 cmake_minimum_required(VERSION 2.6)
 project (cppcli)
 
-if(NOT DEFINED CPPCLI_STANDALONE)
-  option(CPPCLI_STANDALONE "Build CLI as standalone project" ON)
+# Target directories for the installation
+if(NOT DEFINED ${PROJECT_NAME}_BIN_DIR)
+  set(${PROJECT_NAME}_BIN_DIR "bin" CACHE FILEPATH "Installation directory for the binaries")
+endif()
+if(NOT DEFINED ${PROJECT_NAME}_LIB_DIR)
+  set(${PROJECT_NAME}_LIB_DIR "lib" CACHE FILEPATH "Installation directory for the libraries")
+endif()
+if(NOT DEFINED ${PROJECT_NAME}_INCLUDE_DIR)
+  set(${PROJECT_NAME}_INCLUDE_DIR "include/${PROJECT_NAME}" CACHE FILEPATH "Installation directory for the headers")
 endif()
 
-if(CPPCLI_STANDALONE)
-  find_package(Boost)
-  # Include external libraries
+# Google test
+if(NOT DEFINED ${PROJECT_NAME}_USE_INTERNAL_GOOGLETEST)
+  set(${PROJECT_NAME}_USE_INTERNAL_GOOGLETEST ON CACHE BOOL "If set, the internal version of googletest is used, otherwise we rely on a version of googletest being included in a calling script")
+endif()
+
+# Logging library
+if(NOT DEFINED ${PROJECT_NAME}_USE_INTERNAL_CPPLOGGING)
+  set(${PROJECT_NAME}_USE_INTERNAL_CPPLOGGING ON CACHE BOOL "If set, the internal version of cpplogging is used.")
+endif()
+
+### Include directories for external projects, if required
+if(${PROJECT_NAME}_USE_INTERNAL_GOOGLETEST)
+  message(STATUS "${PROJECT_NAME}: Using Google test from external/googletest")
   add_subdirectory(external/googletest)
-
-  set(CPPLOGGING_STANDALONE OFF)
-  add_subdirectory(external/cpplogging)
 endif()
 
-message(STATUS "Using Boost headers from ${Boost_INCLUDE_DIR}")
+if(${PROJECT_NAME}_USE_INTERNAL_CPPLOGGING)
+  message(STATUS "${PROJECT_NAME}: Using cpplogging from external/cpplogging")
+  set(cpplogging_USE_INTERNAL_GOOGLETEST OFF)
+  add_subdirectory(external/cpplogging)
+else()
+  set(cpplogging_LIB_DIR "" CACHE PATH "cpplogging library path")
+  set(cpplogging_INCLUDE_DIR "" CACHE PATH "cpplogging header path")
+endif()
 
-# Trick to add header files to projects in IDEs like Visual Studio and XCode
-FILE(GLOB_RECURSE HEADERS "include/**.h")
-FILE(GLOB_RECURSE SOURCES "src/**.cpp")
+### If boost was not already included elsewhere, get it here
+if(NOT Boost_INCLUDE_DIR)
+  find_package(Boost)
+  message(STATUS "Using Boost headers from ${Boost_INCLUDE_DIR}")
+endif()
+
+### Trick to add header files to projects in IDEs like Visual Studio and XCode
+file(GLOB_RECURSE ${PROJECT_NAME}_HEADERS "include/**.h")
+file(GLOB_RECURSE ${PROJECT_NAME}_SOURCES "src/**.cpp")
+
 add_custom_target(${PROJECT_NAME}_headers
-  SOURCES ${HEADERS} ${SUB_HEADERS}
+  SOURCES ${${PROJECT_NAME}_HEADERS}
 )
 
+# C++
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 set(CMAKE_CXX_FLAGS_ANALYSIS "${CMAKE_CXX_FLAGS} --analyse")
 
 include_directories(
   include
-  ${cpplogging_SOURCE_DIR}/include
+  ${cpplogging_INCLUDE_DIR}
   ${Boost_INCLUDE_DIR}
 )
 
-add_library (cppcli
-  ${SOURCES}
+add_library (${PROJECT_NAME}
+  ${${PROJECT_NAME}_SOURCES}
 )
 
-target_link_libraries(cppcli
+target_link_libraries(${PROJECT_NAME}
   cpplogging
 )
 
-# Define macro for build_and_run_test_targets
-# This method compiles tests when invoked
-macro(build_and_run_test_target TARGET)
-  add_test(NAME "${TARGET}" COMMAND ${CMAKE_CTEST_COMMAND}
-   --build-and-test
-   "${CMAKE_CURRENT_SOURCE_DIR}"
-   "${CMAKE_CURRENT_BINARY_DIR}"
-   --build-noclean
-   --build-nocmake
-   --build-generator "${CMAKE_GENERATOR}"
-   --build-makeprogram "${CMAKE_MAKE_PROGRAM}"
-   --build-exe-dir "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
-   --build-target "${TARGET}"
-   --build-project "${PROJECT_NAME}"
-   --test-command "${TARGET}"
-  )
-endmacro( build_and_run_test_target TARGET )
-
-add_subdirectory(test)
+install (TARGETS ${PROJECT_NAME} DESTINATION ${${PROJECT_NAME}_LIB_DIR})
+install (FILES ${HEADERS} DESTINATION ${${PROJECT_NAME}_INCLUDE_DIR})
