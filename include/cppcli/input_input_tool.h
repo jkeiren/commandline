@@ -13,7 +13,7 @@
 #define INPUT_INPUT_TOOL_H
 
 #include <sstream>
-#include "tool.h"
+#include "cppcli/tool.h"
 
 namespace tools
 {

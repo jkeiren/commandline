@@ -25,7 +25,7 @@
 #include "boost/type_traits/is_pod.hpp"
 #include "boost/shared_ptr.hpp"
 
-#include "command_line_error.h"
+#include "cppcli/command_line_error.h"
 
 class interface_description;
 class command_line_parser;

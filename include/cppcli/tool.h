@@ -18,8 +18,8 @@
 
 #include "cpplogging/logger.h"
 
-#include "command_line_interface.h"
-#include "execution_timer.h"
+#include "cppcli/command_line_interface.h"
+#include "cppcli/execution_timer.h"
 
 /// \brief The namespace for command line tool classes
 namespace tools
