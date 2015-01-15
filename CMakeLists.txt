@@ -39,4 +39,4 @@ target_link_libraries(${PROJECT_NAME} cpplogging)
 install (TARGETS ${PROJECT_NAME}
          LIBRARY DESTINATION lib
          ARCHIVE DESTINATION lib)
-install (FILES ${HEADERS} DESTINATION include)
+install (FILES ${${PROJECT_NAME}_HEADERS} DESTINATION include)
