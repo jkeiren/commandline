@@ -5,11 +5,6 @@ project (cppcli)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 set(CMAKE_CXX_FLAGS_ANALYSIS "${CMAKE_CXX_FLAGS} --analyse")
 
-### Include google test
-if(NOT TARGET gtest)
-  add_subdirectory(external/googletest)
-endif()
-
 ### If boost was not already included elsewhere, get it here
 if(NOT Boost_INCLUDE_DIR)
   find_package(Boost)
@@ -18,12 +13,17 @@ endif()
 
 ### Find logging library
 if(NOT CPPLOGGING_INCLUDE_DIR)
-  find_package(cpplogging)
+  find_package(cpplogging QUIET)
   if(NOT CPPLOGGING_FOUND)
     message(STATUS "Using built-in cpplogging")
     add_subdirectory(external/cpplogging)
     SET(CPPLOGGING_INCLUDE_DIR external/cpplogging/include)
   endif()
+endif()
+
+### Include google test
+if(NOT TARGET gtest)
+  add_subdirectory(external/googletest)
 endif()
 
 ### Trick to add header files to projects in IDEs like Visual Studio and XCode
